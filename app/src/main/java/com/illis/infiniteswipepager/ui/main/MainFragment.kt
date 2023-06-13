@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.illis.infiniteswipepager.R
 import com.illis.infiniteswipepager.data.Banner
-import com.illis.infiniteswipepager.ui.InfinitePager
+import com.illis.infiniteswipepager.ui.InfiniteScrollPager
 import com.illis.infiniteswipepager.ui.ImageLoadingService
 import com.illis.infiniteswipepager.ui.adapter.BannerAdapter
 
@@ -19,7 +19,7 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var infinitePager : InfinitePager
+    private lateinit var infinitePager : InfiniteScrollPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        InfinitePager.init(ImageLoadingService())
+        InfiniteScrollPager.init(ImageLoadingService())
         val adapter = BannerAdapter().apply {
             setItemList(
                 listOf(

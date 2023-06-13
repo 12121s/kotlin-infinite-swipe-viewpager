@@ -16,18 +16,18 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.*
 import com.illis.infiniteswipepager.R
-import com.illis.infiniteswipepager.ui.adapter.InfinitePagerAdapter
+import com.illis.infiniteswipepager.ui.adapter.InfiniteScrollPagerAdapter
 import com.illis.infiniteswipepager.ui.indicators.IndicatorsGroup
-import com.illis.infiniteswipepager.config.Config
+import com.illis.infiniteswipepager.ui.config.InfiniteScrollPagerAttrBuilder
 import java.util.*
 
-class InfinitePager : FrameLayout {
+class InfiniteScrollPager : FrameLayout {
 
-    private lateinit var config: Config
+    private lateinit var infinitePagerAttrBuilder: InfiniteScrollPagerAttrBuilder
     private lateinit var viewPager2: ViewPager2
     private lateinit var timer: Timer
 
-    private var adapter: InfinitePagerAdapter<*>? = null
+    private var adapter: InfiniteScrollPagerAdapter<*>? = null
     private var indicatorsGroup: IndicatorsGroup? = null
 
     private var currentPagePosition = 0
@@ -49,23 +49,23 @@ class InfinitePager : FrameLayout {
     }
 
     private fun initViews(attrs: AttributeSet?) {
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.InfinitePager)
-        config = Config.Builder()
-            .infinite(typedArray.getBoolean(R.styleable.InfinitePager_is_infinite, false))
-            .autoScroll(typedArray.getBoolean(R.styleable.InfinitePager_is_auto_scroll, false))
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.InfiniteScrollPager)
+        infinitePagerAttrBuilder = InfiniteScrollPagerAttrBuilder.Builder()
+            .infinite(typedArray.getBoolean(R.styleable.InfiniteScrollPager_is_infinite, false))
+            .autoScroll(typedArray.getBoolean(R.styleable.InfiniteScrollPager_is_auto_scroll, false))
             .indicatorSize(
                 typedArray.getDimensionPixelSize(
-                    R.styleable.InfinitePager_indicator_size,
+                    R.styleable.InfiniteScrollPager_indicator_size,
                     12
                 )
             )
             .showIndicator(
                 typedArray.getBoolean(
-                    R.styleable.InfinitePager_is_show_indicator,
+                    R.styleable.InfiniteScrollPager_is_show_indicator,
                     false
                 )
             )
-            .interval(typedArray.getInt(R.styleable.InfinitePager_interval, 1500).toLong())
+            .interval(typedArray.getInt(R.styleable.InfiniteScrollPager_interval, 1500).toLong())
             .build(context)
         typedArray.recycle()
         setupViews()
@@ -73,12 +73,12 @@ class InfinitePager : FrameLayout {
 
     private fun setupViews() {
         timer = Timer()
-        if (config.isShowIndicator) {
+        if (infinitePagerAttrBuilder.isShowIndicator) {
             indicatorsGroup = IndicatorsGroup(
                 context,
                 ResourcesCompat.getDrawable(resources, R.drawable.indicator_circle_selected, null),
                 ResourcesCompat.getDrawable(resources, R.drawable.indicator_circle_unselected, null),
-                config.indicatorSize
+                infinitePagerAttrBuilder.indicatorSize
             )
         }
         viewPager2 = ViewPager2(context)
@@ -90,7 +90,7 @@ class InfinitePager : FrameLayout {
 
             override fun onPageScrollStateChanged(state: Int) {
                 if (state == SCROLL_STATE_IDLE) {
-                    if (config.isInfinite) {
+                    if (infinitePagerAttrBuilder.isInfinite) {
                         if (viewPager2.adapter == null) return
                         val itemCount = viewPager2.adapter?.itemCount ?: 0
                         if (itemCount < 2) {
@@ -107,12 +107,12 @@ class InfinitePager : FrameLayout {
             }
 
             override fun onPageSelected(position: Int) {
-                onInfinitePagerChange(position)
+                onInfiniteScrollPagerChange(position)
             }
         })
     }
 
-    fun setAdapter(adapter: InfinitePagerAdapter<*>) {
+    fun setAdapter(adapter: InfiniteScrollPagerAdapter<*>) {
         if (::viewPager2.isInitialized) {
             this.adapter = adapter
             this.adapter?.imageViewLayoutParams = viewPager2.layoutParams
@@ -134,7 +134,7 @@ class InfinitePager : FrameLayout {
 
             viewPager2.adapter = adapter
 
-            if (config.isInfinite) {
+            if (infinitePagerAttrBuilder.isInfinite) {
                 viewPager2.setCurrentItem(1, false)
             }
 
@@ -164,7 +164,7 @@ class InfinitePager : FrameLayout {
                 context,
                 ResourcesCompat.getDrawable(resources, R.drawable.indicator_circle_selected, null),
                 ResourcesCompat.getDrawable(resources, R.drawable.indicator_circle_unselected, null),
-                config.indicatorSize
+                infinitePagerAttrBuilder.indicatorSize
             )
             addView(indicatorsGroup)
             indicatorsGroup?.setIndicators(adapter.getListCount())
@@ -174,8 +174,8 @@ class InfinitePager : FrameLayout {
         }
     }
 
-    fun onInfinitePagerChange(position: Int) {
-        Log.d("InfinitePager", "onInfinitePagerChange() --->>> position = [$position]")
+    fun onInfiniteScrollPagerChange(position: Int) {
+        Log.d("InfiniteScrollPager", "onInfiniteScrollPagerChange() --->>> position = [$position]")
         currentPagePosition = position
         val adapter = adapter ?: return
         val userSlidePosition = adapter.getListPosition(position)
@@ -198,10 +198,10 @@ class InfinitePager : FrameLayout {
 
 
     fun startTimer() {
-        if (config.interval > 0) {
+        if (infinitePagerAttrBuilder.interval > 0) {
             stopTimer()
             timer = Timer()
-            timer.schedule(SliderTimerTask(), config.interval, config.interval)
+            timer.schedule(SliderTimerTask(), infinitePagerAttrBuilder.interval, infinitePagerAttrBuilder.interval)
         }
     }
 
@@ -209,11 +209,11 @@ class InfinitePager : FrameLayout {
         override fun run() {
             (context as? Activity)?.runOnUiThread {
                 val itemCount = viewPager2.adapter?.itemCount ?: 0
-                if (viewPager2.adapter == null || !config.isAutoScroll ||
+                if (viewPager2.adapter == null || !infinitePagerAttrBuilder.isAutoScroll ||
                     itemCount < 2 && imageLoadingInterface != null
                 ) return@runOnUiThread
 
-                if (!config.isInfinite && itemCount - 1 == currentPagePosition) {
+                if (!infinitePagerAttrBuilder.isInfinite && itemCount - 1 == currentPagePosition) {
                     currentPagePosition = 0
                 } else {
                     currentPagePosition++
@@ -236,21 +236,21 @@ class InfinitePager : FrameLayout {
     }
 
     fun setInterval(interval: Long) {
-        config = config.newBuilder()
+        infinitePagerAttrBuilder = infinitePagerAttrBuilder.newBuilder()
             .interval(interval)
             .build(context)
         resetAutoScroll()
     }
 
     fun setIndicatorSize(size: Int) {
-        config = config.newBuilder()
+        infinitePagerAttrBuilder = infinitePagerAttrBuilder.newBuilder()
             .indicatorSize(size)
             .build(context)
         refreshIndicators()
     }
 
     fun isInfinite(checked: Boolean) {
-        config = config.newBuilder()
+        infinitePagerAttrBuilder = infinitePagerAttrBuilder.newBuilder()
             .infinite(checked)
             .build(context)
         adapter?.isInfinite = checked
@@ -259,14 +259,14 @@ class InfinitePager : FrameLayout {
     }
 
     fun isAutoScroll(isAutoScroll: Boolean) {
-        config = config.newBuilder()
+        infinitePagerAttrBuilder = infinitePagerAttrBuilder.newBuilder()
             .autoScroll(isAutoScroll)
             .build(context)
         resetAutoScroll()
     }
 
     fun showIndicators(isShow: Boolean) {
-        config = config.newBuilder()
+        infinitePagerAttrBuilder = infinitePagerAttrBuilder.newBuilder()
             .showIndicator(isShow)
             .build(context)
         indicatorsGroup?.visibility = if (isShow) View.VISIBLE else View.GONE

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="InfinitePager">
+    <declare-styleable name="InfiniteScrollPager">
         <attr name="is_auto_scroll" format="boolean"/>
         <attr name="is_infinite" format="boolean"/>
         <attr name="is_show_indicator" format="boolean"/>

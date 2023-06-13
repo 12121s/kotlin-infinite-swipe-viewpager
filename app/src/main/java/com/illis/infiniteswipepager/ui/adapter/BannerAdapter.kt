@@ -7,10 +7,10 @@ package com.illis.infiniteswipepager.ui.adapter
 import androidx.recyclerview.widget.RecyclerView
 import com.illis.infiniteswipepager.data.Banner
 
-class BannerAdapter: InfinitePagerAdapter<Banner>() {
+class BannerAdapter: InfiniteScrollPagerAdapter<Banner>() {
 
     override fun bindData(holder: RecyclerView.ViewHolder, data: Banner) {
-        val viewHolder = holder as? InfinitePagerViewHolder ?: return
+        val viewHolder = holder as? InfiniteScrollPagerViewHolder ?: return
         viewHolder.bindImage(data.url)
     }
 

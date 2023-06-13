@@ -12,7 +12,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
 
-abstract class InfinitePagerAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+abstract class InfiniteScrollPagerAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val itemList = mutableListOf<T>()
     private var canInfinite = true
@@ -46,7 +46,7 @@ abstract class InfinitePagerAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewH
         imageViewLayoutParams?.let { imageView.layoutParams = it }
         imageView.adjustViewBounds = true
         imageView.scaleType = ImageView.ScaleType.CENTER_CROP
-        return InfinitePagerViewHolder(imageView)
+        return InfiniteScrollPagerViewHolder(imageView)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

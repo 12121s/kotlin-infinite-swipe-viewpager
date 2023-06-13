@@ -1,13 +1,12 @@
-/**
- * Created by laivantrach1190@gmail.com
- * Copyright (c) 2019 . All rights reserved.
- */
-package com.illis.infiniteswipepager.config
+package com.illis.infiniteswipepager.ui.config
 
 import android.content.Context
 import com.illis.infiniteswipepager.R
 
-data class Config(
+/**
+ * InfiniteScrollPager attribute 설정 데이터
+ * */
+data class InfiniteScrollPagerAttrBuilder( 
     val isInfinite: Boolean,
     val isAutoScroll: Boolean,
     val isShowIndicator: Boolean,
@@ -37,14 +36,14 @@ data class Config(
         fun indicatorSize(indicatorSize: Int) = apply { this.indicatorSize = indicatorSize }
         fun interval(interval: Long) = apply { this.interval = interval }
 
-        fun build(context: Context?): Config {
+        fun build(context: Context?): InfiniteScrollPagerAttrBuilder {
             if (context == null) {
                 throw IllegalStateException("context must be not null")
             }
             if (indicatorSize == -1) {
                 indicatorSize = context.resources.getDimensionPixelSize(R.dimen.default_indicator_size)
             }
-            return Config(
+            return InfiniteScrollPagerAttrBuilder(
                 isInfinite = isInfinite,
                 isAutoScroll = isAutoScroll,
                 isShowIndicator = isShowIndicator,

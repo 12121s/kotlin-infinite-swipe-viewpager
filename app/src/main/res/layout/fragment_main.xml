@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainFragment">
 
-    <com.illis.infiniteswipepager.ui.InfinitePager
+    <com.illis.infiniteswipepager.ui.InfiniteScrollPager
         android:id="@+id/infinitePager"
         android:layout_width="match_parent"
         android:layout_height="200dp"

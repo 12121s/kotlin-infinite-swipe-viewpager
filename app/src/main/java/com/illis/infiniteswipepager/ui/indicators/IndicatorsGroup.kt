@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.illis.infiniteswipepager.R
-import com.illis.infiniteswipepager.ui.InfinitePager
+import com.illis.infiniteswipepager.ui.InfiniteScrollPager
 
 @SuppressLint("ViewConstructor")
 class IndicatorsGroup(
@@ -21,7 +21,7 @@ class IndicatorsGroup(
     private val selectedSlideIndicator: Drawable?,
     private val unselectedSlideIndicator: Drawable?,
     private val indicatorSize: Int
-) : LinearLayout(context), InfinitePager.IndicatorChangeListener {
+) : LinearLayout(context), InfiniteScrollPager.IndicatorChangeListener {
 
     private val indicatorShapes = ArrayList<HeroIndicator>()
 
