@@ -2,7 +2,7 @@
  * Created by laivantrach1190@gmail.com
  * Copyright (c) 2019 . All rights reserved.
  */
-package com.illis.infiniteswipepager.ui.adapter
+package com.illis.infiniteswipepager.ui
 
 import android.app.Activity
 import android.content.Context
@@ -16,9 +16,9 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.*
 import com.illis.infiniteswipepager.R
-import com.illis.infiniteswipepager.ui.ImageLoadingInterface
+import com.illis.infiniteswipepager.ui.adapter.InfinitePagerAdapter
 import com.illis.infiniteswipepager.ui.indicators.IndicatorsGroup
-import com.trach.herobannerlib.config.Config
+import com.illis.infiniteswipepager.config.Config
 import java.util.*
 
 class InfinitePager : FrameLayout {
@@ -278,7 +278,7 @@ class InfinitePager : FrameLayout {
         private var imageLoadingInterface: ImageLoadingInterface? = null
 
         fun init(imageLoadingService: ImageLoadingInterface) {
-            InfinitePager.imageLoadingInterface = imageLoadingService
+            imageLoadingInterface = imageLoadingService
         }
 
         fun getImageLoadingInterface(): ImageLoadingInterface {

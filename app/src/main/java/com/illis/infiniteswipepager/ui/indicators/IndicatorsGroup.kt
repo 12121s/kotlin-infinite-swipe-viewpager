@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.illis.infiniteswipepager.R
-import com.illis.infiniteswipepager.ui.adapter.InfinitePager
+import com.illis.infiniteswipepager.ui.InfinitePager
 
 @SuppressLint("ViewConstructor")
 class IndicatorsGroup(

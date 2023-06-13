@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
+import com.illis.infiniteswipepager.ui.InfinitePager
 
 
 class InfinitePagerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

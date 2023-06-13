@@ -2,11 +2,10 @@
  * Created by laivantrach1190@gmail.com
  * Copyright (c) 2019 . All rights reserved.
  */
-package com.trach.herobannerlib.config
+package com.illis.infiniteswipepager.config
 
 import android.content.Context
-import com.trach.herobannerlib.R
-import java.lang.IllegalStateException
+import com.illis.infiniteswipepager.R
 
 data class Config(
     val isInfinite: Boolean,

@@ -67,7 +67,7 @@ abstract class InfinitePagerAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewH
         return if (!isInfinite) {
             position
         } else {
-            if (position in 0..(itemCount - 1)) {
+            if (position in 0 until itemCount) {
                 position + 1
             } else {
                 Log.e(TAG, "setSelectedSlide: Invalid Item Position")
